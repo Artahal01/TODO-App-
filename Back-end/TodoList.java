@@ -86,7 +86,7 @@ public class TodoList {
         try {
             PreparedStatement statement = database.getPreparedStatement(sql);
             statement.setInt(1, id);
-            statement.executeQuery();
+            statement.executeUpdate();
             System.out.println("Todo deleted successfully");
         } catch (SQLException e) {
             e.printStackTrace();
