@@ -1,95 +1,94 @@
 import java.sql.*;
+import java.util.Scanner;
+import java.sql.SQLException;
+
 public class TodoList {
-    private static DatabaseSingleton database = DatabaseSingleton.getInstance();
-    public static void addToDo(int id,String title, String description, String deadline, int priority,boolean done){
-        String sql = "INSERT INTO todo VALUES (?,?,?,?,?,?) ";
-        Timestamp dateString = Timestamp.valueOf(deadline);
-        try {
-            PreparedStatement statement = database.getPreparedStatement(sql);
-            statement.setInt(1,id);
-            statement.setString(2,title);
-            statement.setString(3,description);
-            statement.setTimestamp(4,dateString);
-            statement.setInt(5,priority);
-            statement.setBoolean(6,done);
-            statement.executeUpdate();
-            System.out.println("Todo added succesfully");
-        } catch (SQLException e) {
-       
-            e.printStackTrace();
+    public static void main(String[] args) throws SQLException {
+        chooseAction();
+    }
+
+    public static void chooseAction() throws SQLException {
+        Scanner sc = new Scanner(System.in);
+
+        //Afficher les choix :
+        System.out.println("Choose an action to do: ");
+        System.out.println("1 : Add a todo ,");
+        System.out.println("2 : Find a todo , ");
+        System.out.println("3 : Show all todo , ");
+        System.out.println("4 : Update a todo , ");
+        System.out.println("5 : Delete a todo , ");
+        System.out.println("6 : Qui the program");
+        System.out.println("-----------------*------------------");
+        //Choisir :
+        System.out.println("Enter your choice: ");
+        int choice = sc.nextInt();
+
+        if(choice==1){
+
+            System.out.println("Enter the id of the todo: ");
+            int id = sc.nextInt();
+
+            sc.nextLine();
+
+            System.out.println("The title: ");
+            String title = sc.nextLine();
+
+            System.out.println("The description: ");
+            String description = sc.nextLine();
+
+            System.out.println("The deadline: (XXXX-YY-ZZ AA:BB:CC5)");
+             String deadline = sc.nextLine();
+
+            System.out.println("How important is it? (number 1-10)");
+            int priority = sc.nextInt();
+
+            System.out.println("Status : true of false");
+            boolean done = sc.nextBoolean();
+
+            //Appeler la méthode addTodo() : Ajouter un todo
+            addTodo(id, title, description, deadline, priority, done);
+            System.out.println("-----------------*------------------");
+            chooseAction();
         }
-        
-    } 
-    public static void findToDoById(int id){
-        String sql = "SELECT * FROM todo WHERE id = ?";
-        try {
-            PreparedStatement statement = database.getPreparedStatement(sql);
-            statement.setInt(1, id);
-            ResultSet result = statement.executeQuery();
-            if(result.next()){
-            int Id = result.getInt("id");
-            String title = result.getString("title");
-            String description = result.getString("description");
-            Timestamp deadline = result.getTimestamp("deadline");
-            String dateString = String.valueOf(deadline);
-            int priority = result.getInt("priority");
-            boolean done = result.getBoolean("done");
-            System.out.println("id:"+Id+"\nTitle:"+title+"\nDescription:"+description+
-            "\nDeadline:"+dateString+"\nPriority:"+priority+"\nIs it done:"+done);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        else if(choice==2){
+            //Appeler la méthode findTodo() : Chercher un todo
+            findTodo();
+
+            System.out.println("-----------------*------------------");
+            chooseAction();
+        }
+        else if(choice==3){
+            //Appeler la méthode showAllTodo() : Afficher tous les todo
+            showAllTodo();
+
+            System.out.println("-----------------*------------------");
+            chooseAction();
+        }
+        else if(choice==4){
+            //Appeler la méthode updateTodo() : Changer une colonne dans un todo
+            updateTodo();
+
+            System.out.println("-----------------*------------------");
+            chooseAction();
+        }
+        else if(choice==5){
+            System.out.println("Enter the id of the todo you want to delete :");
+            int id = sc.nextInt();
+            //Appeler la méthode deleteTodo() : Supprimer un todo
+            deleteTodo(id);
+
+            System.out.println("-----------------*------------------");
+            chooseAction();
+        }
+        else if(choice==6){
+            //Appeler la méthode quit()
+            quitProgram();
         }
 
-    }
-    public static void findAllTodo(){
-        try {
-            String sql = "SELECT * FROM todo ORDER BY priority DESC";
-            PreparedStatement statement = database.getPreparedStatement(sql);
-            ResultSet result = statement.executeQuery();
-            while(result.next()){
-            int id = result.getInt("id");
-            String title = result.getString("title");
-            String description = result.getString("description");
-            Timestamp deadline = result.getTimestamp("deadline");
-            String dateString = String.valueOf(deadline);
-            int priority = result.getInt("priority");
-            boolean done = result.getBoolean("done");
-            System.out.println("id:"+id+"\nTitle:"+title+"\nDescription:"+description+
-            "\nDeadline:"+dateString+"\nPriority:"+priority+"\nIs it done:"+done);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-    public static void updateToDo(String title, String description, String deadline, int priority,boolean done,int id){
-        String sql = "UPDATE todo SET title = ?,description = ?,deadline = ?,priority = ?,done = ? WHERE id = ? ";
-        Timestamp dateString = Timestamp.valueOf(deadline);
-        try {
-            PreparedStatement statement = database.getPreparedStatement(sql);
-            statement.setInt(6,id);
-            statement.setString(1,title);
-            statement.setString(2,description);
-            statement.setTimestamp(3,dateString);
-            statement.setInt(4,priority);
-            statement.setBoolean(5,done);
-            statement.executeUpdate();
-            System.out.println("Todo updated succesfully");
-        } catch (SQLException e) {
-       
-            e.printStackTrace();
-        }
-        
-    }
-    public static void deleteTodo(int id){
-        String sql = "DELETE FROM todo WHERE id=?";
-        try {
-            PreparedStatement statement = database.getPreparedStatement(sql);
-            statement.setInt(1, id);
-            statement.executeUpdate();
-            System.out.println("Todo deleted successfully");
-        } catch (SQLException e) {
-            e.printStackTrace();
+        else{
+            System.out.println("Choose one of the following number!");
+            chooseAction();
+            System.out.println("-----------------*------------------");
         }
     }
 
