@@ -1,4 +1,3 @@
-import java.sql.*;
 import java.util.Scanner;
 import java.sql.SQLException;
 
@@ -46,27 +45,27 @@ public class TodoList {
             boolean done = sc.nextBoolean();
 
             //Appeler la méthode addTodo() : Ajouter un todo
-            addTodo(id, title, description, deadline, priority, done);
+            actionTodo.addTodo(id, title, description, deadline, priority, done);
             System.out.println("-----------------*------------------");
             chooseAction();
         }
         else if(choice==2){
             //Appeler la méthode findTodo() : Chercher un todo
-            findTodo();
+            actionTodo.findTodo();
 
             System.out.println("-----------------*------------------");
             chooseAction();
         }
         else if(choice==3){
             //Appeler la méthode showAllTodo() : Afficher tous les todo
-            showAllTodo();
+            actionTodo.showAllTodo();
 
             System.out.println("-----------------*------------------");
             chooseAction();
         }
         else if(choice==4){
             //Appeler la méthode updateTodo() : Changer une colonne dans un todo
-            updateTodo();
+            actionTodo.updateTodo();
 
             System.out.println("-----------------*------------------");
             chooseAction();
@@ -75,14 +74,14 @@ public class TodoList {
             System.out.println("Enter the id of the todo you want to delete :");
             int id = sc.nextInt();
             //Appeler la méthode deleteTodo() : Supprimer un todo
-            deleteTodo(id);
+            actionTodo.deleteTodo(id);
 
             System.out.println("-----------------*------------------");
             chooseAction();
         }
         else if(choice==6){
             //Appeler la méthode quit()
-            quitProgram();
+            actionTodo.quitProgram();
         }
 
         else{
@@ -90,6 +89,7 @@ public class TodoList {
             chooseAction();
             System.out.println("-----------------*------------------");
         }
+        sc.close();
     }
 
 }

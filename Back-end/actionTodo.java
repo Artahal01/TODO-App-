@@ -1,9 +1,4 @@
-package todoPROG2;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.Scanner;
 
 public class actionTodo {
@@ -105,6 +100,7 @@ public class actionTodo {
                         "\nDeadline:"+dateString+"\nPriority:"+priority+"\nIs it done:"+done);
             }
         }
+        sc.close();
     }
 
     public static void showAllTodo(){
@@ -177,7 +173,7 @@ public class actionTodo {
             statement.executeUpdate();
             System.out.println("Updated succesfully");
         }
-
+        sc.close();
     }
 
     public static void deleteTodo(int id){
@@ -202,6 +198,7 @@ public class actionTodo {
         else{
             System.out.println("--♠-♠-♠-♠-♠-♠-♠-♠-♠-♠-♠-♠--");
         }
+        scn.close();
     }
 
     public static void quitProgram(){
